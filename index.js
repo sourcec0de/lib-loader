@@ -50,6 +50,17 @@ function readDirp(path, excludeList) {
     return lib;
 }
 
+function loadOne(path, name) {
+
+    if (name in module.exports) {
+        throw new Error(fmt('libKey \'%s\' already exists', name));
+    }
+
+    module.exports[name] = require(path);
+
+    return module.exports[name];
+}
+
 function load(opts){
     opts = _.defaults(opts || {},{
         libDir: process.cwd()+'/lib',
@@ -70,5 +81,6 @@ function loadMany(libs) {
 
 module.exports = {
     load: load,
+    loadOne: loadOne,
     loadMany: loadMany
 };
